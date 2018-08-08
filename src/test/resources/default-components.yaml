@@ -1,0 +1,2 @@
+networkService: com.ximuyi.engin.server.net.netty.NettyService
+messageCoder: com.ximuyi.engin.server.net.netty.code.DefaultMessageCoder
