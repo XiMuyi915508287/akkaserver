@@ -3,7 +3,7 @@ package com.ximuyi.core.net.netty;
 import akka.actor.ActorRef;
 import com.ximuyi.core.actor.message.MsChannelClose;
 import com.ximuyi.core.actor.message.MsChannelOpen;
-import com.ximuyi.core.core.ContextResolver;
+import com.ximuyi.core.ContextResolver;
 import com.ximuyi.core.session.SessionManager;
 import com.ximuyi.core.session.UserSession;
 import com.ximuyi.core.session.channel.ChannelCloseReason;

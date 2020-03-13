@@ -11,7 +11,7 @@ public class ConfigKey {
 
     public static final String SERVER_APP_LISTENER = build("server.app.listener");
     public static final String SERVER_LOGIN_HELPER = build("server.login.helper");
-    public static final String SERVER_SCHEDULE = build("server.schedule");
+    public static final String SERVER_SCHEDULE = build("server.scheduler");
     public static final String SERVER_CODER = build("server.coder");
 
     public static final String AKKA_SYSTEM = build("akka.system");

@@ -51,8 +51,7 @@ public class ActorScheduler implements IScheduleManager {
     }
 
     private ActorRunnable create(Runnable runnable){
-        String format = String.format("ActorScheduler:%s", actorRef.path());
-        return new ActorRunnable(actorRef, format, runnable);
+        return new ActorRunnable(actorRef, "ActorScheduler", runnable);
     }
 
     private interface ISchedule {

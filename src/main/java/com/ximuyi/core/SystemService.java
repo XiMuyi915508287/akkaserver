@@ -1,4 +1,4 @@
-package com.ximuyi.core.core;
+package com.ximuyi.core;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;

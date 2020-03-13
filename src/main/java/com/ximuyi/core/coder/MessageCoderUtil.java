@@ -1,7 +1,7 @@
 package com.ximuyi.core.coder;
 
 import com.ximuyi.core.command.ICommand;
-import com.ximuyi.core.core.ContextResolver;
+import com.ximuyi.core.ContextResolver;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

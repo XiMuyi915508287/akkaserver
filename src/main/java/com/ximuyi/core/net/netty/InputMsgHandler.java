@@ -5,7 +5,7 @@ import com.ximuyi.core.actor.message.MsChannelCommand;
 import com.ximuyi.core.command.Command;
 import com.ximuyi.core.command.ICommand;
 import com.ximuyi.core.command.handler.CommandHandlerUtil;
-import com.ximuyi.core.core.ContextResolver;
+import com.ximuyi.core.ContextResolver;
 import com.ximuyi.core.session.SessionManager;
 import com.ximuyi.core.session.UserSession;
 import com.ximuyi.core.session.channel.ChannelCloseReason;

@@ -15,7 +15,7 @@ public class CommandHandlerFactory implements ICommandHandlerFactory {
     }
 
     @Override
-    public ICommandHandler find(ICommand command) {
+    public ICommandHandler lookUp(ICommand command) {
         return handlers.get(command.getUniqueId());
     }
 }

@@ -1,13 +1,13 @@
 package com.ximuyi.core.component;
 
-import com.google.common.collect.Sets;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.MissingResourceException;
+
+import com.google.common.collect.Sets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ComponentRegistry implements IComponentRegistry {
 
@@ -46,6 +46,6 @@ public class ComponentRegistry implements IComponentRegistry {
      */
     public void addComponent(IComponent component) {
         componentSet.add(component);
-        logger.info("ComponentRegistry add component " + component.getClass().getName());
+        logger.info("add component {}", component.getClass().getName());
     }
 }

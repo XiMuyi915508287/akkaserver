@@ -1,10 +1,11 @@
-package com.ximuyi.core.core;
+package com.ximuyi.core;
 
-import com.ximuyi.core.api.AppListener;
+import com.ximuyi.core.api.IAppListener;
+import com.ximuyi.core.api.IScheduleManager;
 import com.ximuyi.core.api.login.IUserHelper;
+import com.ximuyi.core.command.handler.ICommandHandlerFactory;
 import com.ximuyi.core.component.IComponent;
 import com.ximuyi.core.component.IComponentRegistry;
-import com.ximuyi.core.command.handler.ICommandHandlerFactory;
 
 class AkkaAppContext {
 
@@ -17,10 +18,10 @@ class AkkaAppContext {
     protected final IComponentRegistry serviceComponents;
 
     /** The app listener. */
-    private AppListener appListener;
+    private IAppListener appListener;
 
     /** schedule manager. **/
-    private ScheduleManager scheduler;
+    private IScheduleManager scheduler;
 
     /** schedule manager. **/
     @SuppressWarnings("rawtypes")
@@ -35,15 +36,15 @@ class AkkaAppContext {
         this.serviceComponents = serviceComponents;
     }
 
-    protected void setAppListener(AppListener appListener) {
+    protected void setAppListener(IAppListener appListener) {
         this.appListener = appListener;
     }
 
-    public ScheduleManager getScheduler() {
+    public IScheduleManager getScheduler() {
         return scheduler;
     }
 
-    protected void setScheduler(ScheduleManager scheduler) {
+    protected void setScheduler(IScheduleManager scheduler) {
         this.scheduler = scheduler;
     }
 
@@ -57,7 +58,7 @@ class AkkaAppContext {
         this.userHelper = userHelper;
     }
 
-    public AppListener getAppListener() {
+    public IAppListener getAppListener() {
         return appListener;
     }
 

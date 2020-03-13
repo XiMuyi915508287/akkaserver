@@ -6,7 +6,7 @@ import com.ximuyi.core.command.handler.ex.CacheResponseHandler;
 import com.ximuyi.core.command.handler.ex.HeartBeatHandler;
 import com.ximuyi.core.command.handler.ex.ISystemHandler;
 import com.ximuyi.core.command.handler.ex.LogoutHandler;
-import com.ximuyi.core.core.ContextResolver;
+import com.ximuyi.core.ContextResolver;
 import io.netty.buffer.ByteBuf;
 
 public class CommandHandlerUtil {
@@ -25,7 +25,7 @@ public class CommandHandlerUtil {
     @SuppressWarnings("rawtypes")
     public static ICommandHandler lookUp(ICommand command){
         ICommandHandlerFactory factory = ContextResolver.getCommandHandlerFactory();
-        return factory.find(command);
+        return factory.lookUp(command);
     }
 
     public static Object decode(ICommand command, ByteBuf byteBuf){

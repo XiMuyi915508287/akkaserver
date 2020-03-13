@@ -4,7 +4,7 @@ import com.ximuyi.core.actor.message.MsUserLogout;
 import com.ximuyi.core.coder.MessageCoderUtil;
 import com.ximuyi.core.command.CommandUtil;
 import com.ximuyi.core.command.handler.CommandHandler;
-import com.ximuyi.core.core.ContextResolver;
+import com.ximuyi.core.ContextResolver;
 import com.ximuyi.core.session.UserSession;
 import com.ximuyi.core.session.channel.ChannelCloseReason;
 import com.ximuyi.core.session.channel.ChannelUtil;

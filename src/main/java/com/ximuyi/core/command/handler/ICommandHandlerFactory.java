@@ -6,5 +6,5 @@ public interface ICommandHandlerFactory {
 
     void reload(ICommandHandler handler);
 
-    ICommandHandler find(ICommand cmd);
+    ICommandHandler lookUp(ICommand cmd);
 }

@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import akka.japi.pf.ReceiveBuilder;
 import com.ximuyi.core.actor.ActorRunnable;
+import com.ximuyi.core.actor.ActorScheduler;
 import com.ximuyi.core.actor.AkkaActor;
 import com.ximuyi.core.actor.message.MsChannelChange;
 import com.ximuyi.core.actor.message.MsChannelClose;
@@ -14,7 +15,9 @@ import com.ximuyi.core.actor.message.MsChannelCommand;
 import com.ximuyi.core.api.login.ConnectWay;
 import com.ximuyi.core.command.handler.CommandHandlerUtil;
 import com.ximuyi.core.command.handler.ICommandHandler;
-import com.ximuyi.core.core.ContextResolver;
+import com.ximuyi.core.config.ConfigKey;
+import com.ximuyi.core.config.Configs;
+import com.ximuyi.core.ContextResolver;
 import com.ximuyi.core.session.channel.ChannelCloseReason;
 import com.ximuyi.core.session.channel.ChannelUtil;
 import com.ximuyi.core.session.channel.NetChannel;
@@ -26,11 +29,16 @@ public class AkkaUser extends AkkaActor {
 
     private static final Logger logger = LoggerFactory.getLogger(AkkaUser.class);
 
+    private static long TIME_OUT = Configs.getInstance().getInteger(ConfigKey.AKKA_USER_TIMEOUT, 10) * 1000L;
+    private static long SECOND_TICK = Configs.getInstance().getInteger(ConfigKey.AKKA_USER_TICK, 5);
+
     private final InnerUser innerUser;
+    private final ActorScheduler scheduler;
     private long operationTime;
 
     public AkkaUser(InnerUser innerUser) {
         this.innerUser = innerUser;
+        this.scheduler = new ActorScheduler(getSelf(), getContext());
     }
 
     @Override

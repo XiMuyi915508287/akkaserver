@@ -1,6 +1,6 @@
 package com.ximuyi.core.api;
 
-public interface AppListener {
+public interface IAppListener {
     void onInit() throws Throwable;
     void onLaunch();
     void onShutdown();

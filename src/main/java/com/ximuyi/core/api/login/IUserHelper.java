@@ -11,7 +11,7 @@ public interface IUserHelper<T0> {
      */
     LoginResult doUserLogin(T0 message, boolean isReconnect);
 
-    long getUserId(T0 message);
+    AccountInfo getAccountInfo(T0 message);
 
     void onReconnect(IUser extUser, ConnectWay connectWay);
 

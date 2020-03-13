@@ -1,6 +1,4 @@
-package com.ximuyi.core.core;
-
-import java.io.File;
+package com.ximuyi.core;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -12,7 +10,6 @@ import com.ximuyi.core.actor.AkkaDeadLetter;
 import com.ximuyi.core.component.Component;
 import com.ximuyi.core.config.ConfigKey;
 import com.ximuyi.core.config.Configs;
-import com.ximuyi.core.utils.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,15 +29,14 @@ class AkkaMediator extends Component {
 
     @Override
     public void init() throws Throwable {
-        Configs wrapper = Configs.getInstance();
-        String akkaSystem = wrapper.getString(ConfigKey.AKKA_SYSTEM, "system");
-        File file = FileUtil.scanFileByPath(wrapper.getRootPath(), "akka.conf");
-        Config config = ConfigFactory.parseFile(file);
+        Configs configs = Configs.getInstance();
+        String akkaSystem = configs.getString(ConfigKey.AKKA_SYSTEM, "system");
+        Config config = ConfigFactory.load("akka");
         config.withFallback(ConfigFactory.defaultReference(Thread.currentThread().getContextClassLoader()));
         Config akkaConfig = ConfigFactory.load(config);
         system = ActorSystem.create(akkaSystem, akkaConfig);
 
-        String akkaName = wrapper.getString(ConfigKey.AKKA_NAME, "akka");
+        String akkaName = configs.getString(ConfigKey.AKKA_NAME, "akka");
         systemRef = system.actorOf(Props.create(SystemService.class, system), akkaName);
 
         ActorRef deadLetterListener = system.actorOf(Props.create(AkkaDeadLetter.class));

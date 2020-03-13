@@ -1,8 +1,10 @@
-package com.ximuyi.core.core;
+package com.ximuyi.core;
 
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
+import com.ximuyi.core.api.IAppListener;
+import com.ximuyi.core.api.IScheduleManager;
 import com.ximuyi.core.api.login.IUserHelper;
 import com.ximuyi.core.api.login.ProxyUserHelper;
 import com.ximuyi.core.command.handler.CommandHandlerFactory;
@@ -14,9 +16,11 @@ import com.ximuyi.core.config.Configs;
 import com.ximuyi.core.net.netty.NettyService;
 import com.ximuyi.core.utils.ClassUtil;
 import com.ximuyi.core.utils.YamlUtils;
+import jodd.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ximuyi.core.config.ConfigKey.SERVER_APP_LISTENER;
 import static com.ximuyi.core.config.ConfigKey.SERVER_SCHEDULE;
 
 public class AkkaServer {
@@ -44,24 +48,51 @@ public class AkkaServer {
         ComponentRegistry serverComponents = new ComponentRegistry();
         ComponentRegistry managerComponents = new ComponentRegistry();
         this.application = new AkkaAppContext(appName, managerComponents, serverComponents);
-        this.application.setScheduler(ClassUtil.newInstance(Configs.getInstance().getString(SERVER_SCHEDULE)));
-        this.application.setAppListener(ClassUtil.newInstance(Configs.getInstance().getString(ConfigKey.SERVER_APP_LISTENER)));
+        this.application.setScheduler(createScheduleManager());
+        this.application.setAppListener(createAppListener());
+        this.application.setUserHelper(createUserHelper());
         this.application.setCommandHandlerFactory(new CommandHandlerFactory());
-        @SuppressWarnings("rawtypes")
-        IUserHelper userHelper = ClassUtil.newInstance(Configs.getInstance().getString(ConfigKey.SERVER_LOGIN_HELPER));
-        //noinspection rawtypes
-        userHelper = (IUserHelper) Proxy.newProxyInstance(userHelper.getClass().getClassLoader(), new Class[] { IUserHelper.class }, new ProxyUserHelper(userHelper));
-        this.application.setUserHelper(userHelper);
         ContextResolver.setContext(application);
         CoreAccessor.getInstance().setLocator(new CoreLocatorImpl());
-        this.initComponent(managerComponents, serverComponents);
+        this.initServerComponent(managerComponents, serverComponents);
         this.initConfigComponent();
 
         //先初始化自己的组件，在初始化App，不然App获取某些组件会null
         application.getAppListener().onInit();
     }
 
-    private void initComponent(ComponentRegistry managerComponents, IComponentRegistry serverComponents) throws Throwable {
+    private IScheduleManager createScheduleManager(){
+        String string = Configs.getInstance().getString(SERVER_SCHEDULE);
+        if (StringUtil.isEmpty(string)){
+            return new ScheduleManager();
+        }
+        else {
+            return ClassUtil.newInstance(string);
+        }
+    }
+
+    private IAppListener createAppListener(){
+        String string = Configs.getInstance().getString(SERVER_APP_LISTENER);
+        if (StringUtil.isEmpty(string)){
+            return new AppListener();
+        }
+        else {
+            return ClassUtil.newInstance(string);
+        }
+    }
+
+    private IUserHelper createUserHelper(){
+        String string = Configs.getInstance().getString(ConfigKey.SERVER_LOGIN_HELPER);
+        if (StringUtil.isEmpty(string)){
+            throw new RuntimeException("配置[" + ConfigKey.SERVER_LOGIN_HELPER + "]不能为空");
+        }
+        @SuppressWarnings("rawtypes")
+        IUserHelper userHelper = ClassUtil.newInstance(string);
+        //noinspection rawtypes
+        return (IUserHelper) Proxy.newProxyInstance(userHelper.getClass().getClassLoader(), new Class[] { IUserHelper.class }, new ProxyUserHelper(userHelper));
+    }
+
+    private void initServerComponent(ComponentRegistry managerComponents, IComponentRegistry serverComponents) throws Throwable {
         serverComponents.addComponent(new AkkaMediator());
         serverComponents.addComponent(new NettyService());
         //先全部增加进去，确保在初始化之前，里面都存在的主键
@@ -83,7 +114,7 @@ public class AkkaServer {
     }
 
     private void initConfigComponent() throws Throwable {
-        String filePath = Configs.getInstance().getFilePath("config/components.yaml");
+        String filePath = Configs.getInstance().getConfigFilePath("components.yaml");
         Map<String,String> configs = YamlUtils.loadConfigIfExits(filePath, Map.class);
         if (configs == null || configs.isEmpty()) {
             return;

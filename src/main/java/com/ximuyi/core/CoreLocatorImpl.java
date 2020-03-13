@@ -1,4 +1,4 @@
-package com.ximuyi.core.core;
+package com.ximuyi.core;
 
 import com.ximuyi.core.api.IScheduleManager;
 import com.ximuyi.core.component.Component;

@@ -47,12 +47,12 @@ public class Configs {
         return value == null ? defaultValue : value;
     }
 
-    public String getRootPath() {
-        return rootPath;
-    }
-
     public String getFilePath(String filename) {
         return rootPath + File.separator + filename;
+    }
+
+    public String getConfigFilePath(String filename) {
+        return getFilePath("config" + File.separator + filename);
     }
 
     @Override

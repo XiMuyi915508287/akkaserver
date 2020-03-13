@@ -1,8 +1,9 @@
-package com.ximuyi.core.core;
+package com.ximuyi.core;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.ximuyi.core.api.AppListener;
+import com.ximuyi.core.api.IAppListener;
+import com.ximuyi.core.api.IScheduleManager;
 import com.ximuyi.core.api.login.IUserHelper;
 import com.ximuyi.core.command.handler.ICommandHandlerFactory;
 
@@ -13,7 +14,7 @@ public class ContextResolver {
     private ContextResolver()
     {}
 
-    public static AppListener getAppListener()
+    public static IAppListener getAppListener()
     {
         return context.getAppListener();
     }
@@ -24,7 +25,7 @@ public class ContextResolver {
         return context.getUserHelper();
     }
 
-    public static ScheduleManager getScheduler() {
+    public static IScheduleManager getScheduler() {
         return context.getScheduler();
     }
 
